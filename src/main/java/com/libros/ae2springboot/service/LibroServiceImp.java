@@ -27,16 +27,32 @@ public class LibroServiceImp implements LibroService {
         return optionalLibro.orElse(null);
     }
 
+    // Se verifica que el libro no tenga un ID asignado
+    // y que no exista otro libro con el mismo título
+    // antes de guardarlo.
+    // Esta comprobación la implemento ya que la pide en el
+    // requerimiento 2, pero no es necesario ya que al añadir
+    // un nuevo libro, el ID se genera automáticamente de manera
+    // autoincremental con la anotación @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Override
     public void addLibro(Libro libro) {
-        libroRepository.save(libro);
+        if (libro.getId() == null && !tituloExists(libro.getTitulo())) {
+            libroRepository.save(libro);
+        }
     }
 
+    // Además de verificar si el libro existe,
+    // se verifica si el nuevo título ya está asignado
+    // a otro libro.
     @Override
     public void updateLibro(Long id, Libro libro) {
         Optional<Libro> optionalExistingLibro = libroRepository.findById(id);
         if (optionalExistingLibro.isPresent()) {
             Libro existingLibro = optionalExistingLibro.get();
+            if (!libro.getTitulo().equals(existingLibro.getTitulo()) && tituloExists(libro.getTitulo())) {
+                // Título ya existe para otro libro
+                return;
+            }
             existingLibro.setTitulo(libro.getTitulo());
             existingLibro.setEditorial(libro.getEditorial());
             existingLibro.setNota(libro.getNota());
@@ -47,5 +63,9 @@ public class LibroServiceImp implements LibroService {
     @Override
     public void deleteLibro(Long id) {
         libroRepository.deleteById(id);
+    }
+
+    private boolean tituloExists(String titulo) {
+        return libroRepository.findByTitulo(titulo).isPresent();
     }
 }
