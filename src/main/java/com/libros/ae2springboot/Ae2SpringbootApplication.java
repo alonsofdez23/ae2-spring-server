@@ -10,7 +10,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class Ae2SpringbootApplication {
 
     public static void main(String[] args) {
+        System.out.println("Servicio Rest -> Cargando el contexto de Spring...");
         SpringApplication.run(Ae2SpringbootApplication.class, args);
+        System.out.println("Servicio Rest -> Contexto de Spring cargado!");
     }
 
 }
