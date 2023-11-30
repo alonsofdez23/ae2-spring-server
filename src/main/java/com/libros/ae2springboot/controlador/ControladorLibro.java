@@ -20,6 +20,10 @@ public class ControladorLibro {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Libro> altaLibro(@RequestBody Libro l) {
         System.out.println("altaLibro: objeto libro: " + l);
+        if (daoLibro.existeTitulo(l.getTitulo())) {
+            return new ResponseEntity<Libro>(l, HttpStatus.CONFLICT); // 409 CONFLICT
+        }
+
         daoLibro.addLibro(l);
         return new ResponseEntity<Libro>(l, HttpStatus.CREATED); // 201 CREATED
     }
@@ -38,6 +42,11 @@ public class ControladorLibro {
     @PutMapping(path="libros/{id}",
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Libro> modificarlibro(@PathVariable("id") int id, @RequestBody Libro l) {
+        if (daoLibro.existeTitulo(l.getTitulo())) {
+            System.out.println("Ya existe un libro con el título: " + l.getTitulo());
+            return new ResponseEntity<Libro>(l, HttpStatus.CONFLICT); // 409 CONFLICT
+        }
+
         System.out.println("ID a modificar: " + id);
         System.out.println("Datos a modificar: " + l);
         l.setId(id);

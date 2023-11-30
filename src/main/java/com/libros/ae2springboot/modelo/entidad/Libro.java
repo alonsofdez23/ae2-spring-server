@@ -1,5 +1,7 @@
 package com.libros.ae2springboot.modelo.entidad;
 
+import java.util.Objects;
+
 public class Libro {
     private int id;
     private String titulo;

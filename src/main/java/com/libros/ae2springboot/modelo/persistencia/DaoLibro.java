@@ -66,4 +66,13 @@ public class DaoLibro {
     public List<Libro> list() {
         return listaLibros;
     }
+
+    public boolean existeTitulo(String titulo) {
+        for (Libro libro : listaLibros) {
+            if (libro.getTitulo().equalsIgnoreCase(titulo)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
