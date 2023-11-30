@@ -25,4 +25,45 @@ public class DaoLibro {
         listaLibros.add(l4);
         listaLibros.add(l5);
     }
+
+    public void addLibro(Libro l) {
+        l.setId(contador++);
+        listaLibros.add(l);
+    }
+
+    public Libro deleteLibro(int id) {
+        try {
+            return listaLibros.remove(id);
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("delete -> Libro fuera de rango");
+            return null;
+        }
+    }
+
+    public Libro update(Libro l) {
+        try {
+            Libro lAux = listaLibros.get(l.getId());
+            lAux.setTitulo(l.getTitulo());
+            lAux.setEditorial(l.getEditorial());
+            lAux.setNota(l.getNota());
+
+            return lAux;
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("update -> Libro fuera de rango");
+            return null;
+        }
+    }
+
+    public Libro get(int id) {
+        try {
+            return listaLibros.get(id);
+        } catch (IndexOutOfBoundsException e) {
+            System.out.print("Libro fuera de rango");
+            return null;
+        }
+    }
+
+    public List<Libro> list() {
+        return listaLibros;
+    }
 }
